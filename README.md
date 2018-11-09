@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # react-native-elastos-mainchain
 
 ## Getting started
@@ -42,3 +43,6 @@ import RNElastosMainchain from 'react-native-elastos-mainchain';
 RNElastosMainchain;
 ```
   
+=======
+# react-native-mainchain-plugin
+>>>>>>> 7bce594fbfb8fc8759c1203f1cef55b7fd393fab
