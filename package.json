@@ -1,0 +1,36 @@
+{
+  "name": "react-native-elastos-mainchain",
+  "title": "React Native Elastos Mainchain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elastos/react-native-elastos-mainchain.git",
+    "baseUrl": "https://github.com/elastos/react-native-elastos-mainchain"
+  },
+  "keywords": [
+      "elastos",
+      "react-native",
+      "wallet",
+      "mainchain"
+  ],
+  "author": {
+    "name": "Ademcan",
+    "email": "ademcan@ademcan.net"
+  },
+  "license": "Apache-2.0",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "16.2.0",
+    "react-native": "^0.52.0"
+  },
+  "devDependencies": {
+    "react": "16.2.0",
+    "react-native": "^0.52.0"
+  }
+}
