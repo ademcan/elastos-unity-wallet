@@ -9,8 +9,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elastos/react-native-elastos-mainchain.git",
-    "baseUrl": "https://github.com/elastos/react-native-elastos-mainchain"
+    "url": "git+https://github.com/cyber-republic/react-native-elastos-mainchain.git",
+    "baseUrl": "https://github.com/cyber-republic/react-native-elastos-mainchain"
   },
   "keywords": [
       "elastos",
