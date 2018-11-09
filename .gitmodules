@@ -1,0 +1,3 @@
+[submodule "Elastos.ORG.Wallet.Lib.C"]
+	path = Elastos.ORG.Wallet.Lib.C
+	url = https://github.com/elastos/Elastos.ORG.Wallet.Lib.C
