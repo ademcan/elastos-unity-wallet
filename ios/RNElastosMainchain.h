@@ -3,6 +3,7 @@
 #else
 #import "RCTBridgeModule.h"
 #endif
+#import <Foundation/Foundation.h>
 
 @interface RNElastosMainchain : NSObject <RCTBridgeModule>
 

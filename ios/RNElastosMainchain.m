@@ -1,4 +1,7 @@
 #import "RNElastosMainchain.h"
+#import "Elastos.Wallet.Utility.h"
+#import <Foundation/Foundation.h>
+#import <React/RCTLog.h>
 
 @implementation RNElastosMainchain
 
@@ -18,6 +21,14 @@ RCT_EXPORT_METHOD(sayHello: (RCTResponseSenderBlock)callback)
 {
     // TODO: Implement
     callback(@[[NSNull null], @"Hello from react-native-elastos-mainchain plugin" ]);
+}
+
+
+RCT_EXPORT_METHOD(generateMnemonic: (RCTResponseSenderBlock)callback)
+{
+    // TODO: Implement
+    char* mnemonic = generateMnemonic("english", "");
+    callback(@[[NSNull null], @(mnemonic) ]);
 }
 
 
