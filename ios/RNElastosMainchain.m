@@ -24,5 +24,23 @@ RCT_EXPORT_METHOD(generateMnemonic: (RCTResponseSenderBlock)callback)
     callback(@[[NSNull null], @(mnemonic) ]);
 }
 
+RCT_EXPORT_METHOD(getSinglePrivateKey: (RCTResponseSenderBlock)callback)
+{
+    char* mnemonic = generateMnemonic("english", "");
+    void* seed;
+    int seedLen = getSeedFromMnemonic(&seed, mnemonic, "english", "", "");
+    char* privateKey = getSinglePrivateKey(seed, seedLen);
+    callback(@[[NSNull null], @(privateKey) ]);
+}
+
+RCT_EXPORT_METHOD(getSinglePublicKey: (RCTResponseSenderBlock)callback)
+{
+    char* mnemonic = generateMnemonic("english", "");
+    void* seed;
+    int seedLen = getSeedFromMnemonic(&seed, mnemonic, "english", "", "");
+    char* publicKey = getSinglePublicKey(seed, seedLen);
+    callback(@[[NSNull null], @(publicKey) ]);
+}
+
 
 @end
