@@ -61,7 +61,7 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation project(':libs')
+    implementation project(':ElastosWallet')
 }
 
 def configureReactNativePom(def pom) {
