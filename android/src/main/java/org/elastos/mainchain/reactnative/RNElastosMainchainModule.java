@@ -12,9 +12,19 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
     private static final String TAG = "WalletPlugin";
 
+    public String rootPath;
+
+    public MasterWalletManager walletManager;
+    public String language;
+
     public RNElastosMainchainModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+
+        rootPath = reactContext.getFilesDir().getParent();
+        ElastosWalletUtils.InitConfig(reactContext, rootPath);
+        walletManager = new MasterWalletManager(rootPath);
+        language = "english";
     }
 
     @Override
@@ -25,9 +35,6 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void generateMnemonic(Callback callback) {
         String message = "";
-        String rootPath = getReactApplicationContext().getFilesDir().getParent();
-        MasterWalletManager walletManager = new MasterWalletManager(rootPath);
-        String language = "english";
         String mnemonic = walletManager.GenerateMnemonic(language);
         message = "mnemonic: " + mnemonic + "\n";
 
@@ -36,7 +43,6 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
         String payPassword = "elastos2018";
         IMasterWallet masterWallet = walletManager.CreateMasterWallet(masterWalletId, mnemonic, phrasePassword, payPassword, language);
         message += "PublicKey: " + masterWallet.GetPublicKey() + "\n";
-        message += "ID: " + masterWallet.GetId() + "\n";
 
         String chainID = "ELA";
         boolean singleAddress = false;
