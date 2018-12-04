@@ -1,4 +1,12 @@
-# react-native-elastos-wallet-core
+# React Native Elastos Wallet Plugin
+
+The purpose of this repository is to provide an npm package for [Elastos React Native Framework](https://github.com/cyber-republic/elastos-ReactNative-framework) Alpha Release.
+
+Elastos Wallet is used to manage private and public keys and to make transactions on the Elastos network, including DID sidechain.
+
+## Primary Code Reviewers
+[Adem](https://github.com/ademcan)
+[Eric](https://github.com/EricDualc)
 
 ## Getting started
 
