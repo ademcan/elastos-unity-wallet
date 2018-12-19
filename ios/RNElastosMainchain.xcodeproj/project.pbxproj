@@ -26,6 +26,7 @@
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNElastosMainchain.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNElastosMainchain.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		695D268521B83BD100B56E46 /* libspvsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspvsdk.a; path = "../Elastos.ELA.SPV.Cpp/cmake-build-ios/lib/libspvsdk.a"; sourceTree = "<group>"; };
+		6974DF0521CA47A4000A43B2 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RNElastosMainchain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNElastosMainchain.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNElastosMainchain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNElastosMainchain.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,6 +54,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				6974DF0521CA47A4000A43B2 /* Data */,
 				B3E7B5881CC2AC0600A0062D /* RNElastosMainchain.h */,
 				B3E7B5891CC2AC0600A0062D /* RNElastosMainchain.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -227,6 +229,7 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -248,6 +251,7 @@
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
