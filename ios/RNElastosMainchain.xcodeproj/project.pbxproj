@@ -231,11 +231,13 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/**",
-					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/build/ios/prefix/include/**",
+					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/boost_1_67_0",
+					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/Interface",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/lib",
+					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/build/ios/build/arm64",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNElastosMainchain;
@@ -250,11 +252,13 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/**",
-					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/build/ios/prefix/include/**",
+					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/boost_1_67_0",
+					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/Interface",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/lib",
+					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/build/ios/build/arm64",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNElastosMainchain;
