@@ -14,12 +14,55 @@
 #include <iostream>
 #include <boost/scoped_ptr.hpp>
 #include "MasterWalletManager.h"
+#include "ISubWalletCallback.h"
 #include "IMasterWallet.h"
 
+//NSString *language = @"english";
+//NSString *mRootPath = [RNElastosMainchain getRootPath];
+//const char *rootPath = [mRootPath UTF8String];
+//Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
 
 @implementation RNElastosMainchain
 
+
 RCT_EXPORT_MODULE()
+
+
+class SubWalletCallback: public Elastos::ElaWallet::ISubWalletCallback {
+public:
+    ~SubWalletCallback() {}
+    SubWalletCallback() {}
+    
+    virtual void OnTransactionStatusChanged(
+                                            const std::string &txid,const std::string &status,
+                                            const nlohmann::json &desc,uint32_t confirms) {
+        std::cout << "OnTransactionStatusChanged -> " << std::endl;
+    }
+    virtual void OnBlockSyncStarted() {
+        std::cout << "OnBlockSyncStarted" << std::endl;
+    }
+    virtual void OnBlockHeightIncreased(uint32_t currentBlockHeight,
+                                        uint32_t estimatedHeight) {
+        std::cout << "OnBlockHeightIncreased -> " << std::endl;
+    }
+    virtual void OnBlockSyncStopped() {
+        std::cout << "OnBlockSyncStopped" << std::endl;
+    }
+    virtual void OnBalanceChanged(uint64_t balance) {
+        std::cout << "OnBalanceChanged -> " << std::endl;
+    }
+    virtual void OnTxPublished(const std::string &hash,
+                               const nlohmann::json &result) {
+        std::cout << "OnTxPublished -> " << std::endl;
+    }
+    
+    virtual void OnTxDeleted(const std::string &hash, bool notifyUser,
+                             bool recommendRescan) {
+        std::cout << "OnTxDeleted -> " << std::endl;
+    }
+};
+
+
 
 + (NSString *)getRootPath
 {
@@ -61,6 +104,65 @@ RCT_EXPORT_MODULE()
 }
 
 
+RCT_EXPORT_METHOD(generateMnemonic: (RCTResponseSenderBlock)callback)
+{
+    
+}
+
+
+
+RCT_EXPORT_METHOD(importWalletWithMnemonic: (RCTResponseSenderBlock)callback)
+{
+    
+    NSString *mRootPath = [RNElastosMainchain getRootPath];
+    const char *rootPath = [mRootPath UTF8String];
+    Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
+    
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->ImportWalletWithMnemonic("masterWalletId", "maximum farm someone leg music federal pyramid lounge scrap bomb skin mystery", "", "Ela-TestRN", false);
+    std::string chainID = "ELA";
+    Elastos::ElaWallet::ISubWallet *subWallet = masterWallet->CreateSubWallet(chainID,10000);
+    std::string publicAddress = subWallet->CreateAddress();
+    uint64_t balance = subWallet->GetBalanceWithAddress("EJgzTf95R81xMjQgzLWuUvc8wUwa6kWe2v");
+    NSLog(@"BALANCE IS : %@", [NSNumber numberWithUnsignedLongLong:balance]);
+    
+    while (true) {
+        sleep(10);
+        NSLog(@"BALANCE IS : %@", [NSNumber numberWithUnsignedLongLong:balance]);
+    }
+    
+    //    Elastos::ElaWallet::ISubWalletCallback *subCallback = new Elastos::ElaWallet::ISubWalletCallback();
+    //    [Elastos::ElaWallet::ISubWalletCallback->OnBlockSyncStarted()]
+    
+    subWallet->AddCallback(new SubWalletCallback());
+    
+    callback(@[[NSNull null], @"success", @(publicAddress.c_str()), [NSNumber numberWithUnsignedLongLong:balance] ]);
+}
+
+
+
+
+
+
+RCT_EXPORT_METHOD(getLatestTx: (RCTResponseSenderBlock)callback)
+{
+    NSString *language = @"english";
+    NSString *mRootPath = [RNElastosMainchain getRootPath];
+    const char *rootPath = [mRootPath UTF8String];
+    Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
+    
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->ImportWalletWithMnemonic("masterWalletId", "maximum farm someone leg music federal pyramid lounge scrap bomb skin mystery", "", "Ela-TestRN", false);
+    std::string chainID = "ELA";
+    Elastos::ElaWallet::ISubWallet *subWallet = masterWallet->CreateSubWallet(chainID, 10000);
+    std::string publicAddress = subWallet->CreateAddress();
+    uint64_t balance = subWallet->GetBalance();
+    
+    nlohmann::json j = subWallet->GetAllAddress(0, 3);
+    
+}
+
+
+
+
 RCT_EXPORT_METHOD(createWallet: (RCTResponseSenderBlock)callback)
 {
     NSString *mRootPath;
@@ -86,8 +188,12 @@ RCT_EXPORT_METHOD(createWallet: (RCTResponseSenderBlock)callback)
                     const std::string mnemonic = manager->GenerateMnemonic("english");
                     Elastos::ElaWallet::IMasterWallet *masterWallet = manager->CreateMasterWallet(walletID, mnemonic, phrasePassword, payPassword, singleAddress);
                     
-                    NSLog(@" MNEMONIC : %s", mnemonic.c_str() );
-                    callback(@[[NSNull null], @(mnemonic.c_str()) ]);
+                    std::string chainID = "ELA";
+                    Elastos::ElaWallet::ISubWallet *subWallet = masterWallet->CreateSubWallet(chainID, 10000);
+                    std::string publicAddress = subWallet->CreateAddress();
+                    
+                    
+                    callback(@[[NSNull null], @(mnemonic.c_str()), @(publicAddress.c_str()) ]);
                     
                 } catch (const std::exception &e) {
                     NSLog(@"Mnemonic Exception : %s", e.what());
@@ -106,3 +212,4 @@ RCT_EXPORT_METHOD(createWallet: (RCTResponseSenderBlock)callback)
 }
 
 @end
+
