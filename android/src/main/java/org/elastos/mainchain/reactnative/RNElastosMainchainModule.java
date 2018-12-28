@@ -1,6 +1,5 @@
 package org.elastos.mainchain.reactnative;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -39,7 +38,7 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
         rootPath = reactContext.getFilesDir().getParent();
         ElastosWalletUtils.InitConfig(reactContext, rootPath);
         walletManager = new MasterWalletManager(rootPath);
-        mnemonic = "shock section salt trigger immense genuine junk purpose shine cereal boy rubber";
+        mnemonic = "";
         language = "english";
         masterWalletId = "masterWalletId";
         phrasePassword = "";
@@ -47,29 +46,29 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
         singleAddress = false;
         feePerKb = 10000; //SELA
 
-        masterWallet = walletManager.ImportWalletWithMnemonic(masterWalletId, mnemonic, phrasePassword, payPassword, singleAddress);
-        String chainID = "ELA";
-        subWallet = masterWallet.CreateSubWallet(chainID, feePerKb);
-        subWallet.AddCallback(new ISubWalletCallback() {
-            @Override public void OnTransactionStatusChanged(String txId, String status, String desc, int confirms) {
-                Log.e("Wallet Info", "txId: " + txId + " status: " + status + " desc: " + desc + " confirms: " + String.valueOf(confirms));
-            }
-            @Override public void OnBlockSyncStarted() {
-                Log.e("Wallet Info", "BlockSyncStarted");
-            }
-
-            @Override public void OnBlockHeightIncreased(int currentBlockHeight, int progress) {
-                Log.e("Wallet Info", "currentBlockHeight: " + String.valueOf(currentBlockHeight) + " progress: " + String.valueOf(progress));
-            }
-            @Override public void OnBlockSyncStopped() {
-                Log.e("Wallet Info", "BlockSyncStopped");
-            }
-
-            @Override
-            public void OnBalanceChanged(long l) {
-                Log.e("Wallet Info", "BalanceChanged: " + String.valueOf(l));
-            }
-        });
+//        masterWallet = walletManager.ImportWalletWithMnemonic(masterWalletId, mnemonic, phrasePassword, payPassword, singleAddress);
+//        String chainID = "ELA";
+//        subWallet = masterWallet.CreateSubWallet(chainID, feePerKb);
+//        subWallet.AddCallback(new ISubWalletCallback() {
+//            @Override public void OnTransactionStatusChanged(String txId, String status, String desc, int confirms) {
+//                Log.e("Wallet Info", "txId: " + txId + " status: " + status + " desc: " + desc + " confirms: " + String.valueOf(confirms));
+//            }
+//            @Override public void OnBlockSyncStarted() {
+//                Log.e("Wallet Info", "BlockSyncStarted");
+//            }
+//
+//            @Override public void OnBlockHeightIncreased(int currentBlockHeight, int progress) {
+//                Log.e("Wallet Info", "currentBlockHeight: " + String.valueOf(currentBlockHeight) + " progress: " + String.valueOf(progress));
+//            }
+//            @Override public void OnBlockSyncStopped() {
+//                Log.e("Wallet Info", "BlockSyncStopped");
+//            }
+//
+//            @Override
+//            public void OnBalanceChanged(long l) {
+//                Log.e("Wallet Info", "BalanceChanged: " + String.valueOf(l));
+//            }
+//        });
     }
 
     @Override
@@ -108,14 +107,7 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getBalance(Callback callback) {
         long balance = subWallet.GetBalance();
-
-        String rawTransaction = subWallet.CreateTransaction("", "EaGwcNUnrZP87z1gLBWLGS3vtwjyWw3f6q", 1100000, "from Mobile Wallet", "remark");
-        long fee = subWallet.CalculateTransactionFee(rawTransaction, feePerKb);
-        rawTransaction = subWallet.UpdateTransactionFee(rawTransaction, fee);
-        rawTransaction = subWallet.SignTransaction(rawTransaction, payPassword);
-        String transactionId = subWallet.PublishTransaction(rawTransaction);
-
-        callback.invoke(null, transactionId);
+        callback.invoke(null, String.valueOf(balance));
     }
 
     @ReactMethod
@@ -126,6 +118,7 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
             String address = new JSONObject(subWallet.GetAllAddress(i,1)).getJSONArray("Addresses").get(0).toString();
             try {
                 JSONObject transaction = new JSONObject(subWallet.GetAllTransaction(0, 5, address));
+                if (transaction.isNull("Transactions")) break;
                 JSONArray transactionField = transaction.getJSONArray("Transactions");
                 int length = transactionField.length();
                 if (length == 0) break;
@@ -142,8 +135,8 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendToAddress(long amount, String toAddress, Callback callback) {
-        String rawTransaction = subWallet.CreateTransaction("", toAddress, amount, "from Mobile Wallet", "remark");
+    public void sendToAddress(String amount, String toAddress, Callback callback) {
+        String rawTransaction = subWallet.CreateTransaction("", toAddress, Long.parseLong(amount), "from Mobile Wallet", "remark");
         long fee = subWallet.CalculateTransactionFee(rawTransaction, feePerKb);
         rawTransaction = subWallet.UpdateTransactionFee(rawTransaction, fee);
         rawTransaction = subWallet.SignTransaction(rawTransaction, payPassword);
