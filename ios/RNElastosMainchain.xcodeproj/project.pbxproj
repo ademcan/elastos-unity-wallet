@@ -234,6 +234,7 @@
 					"$(SRCROOT)/../node_modules/react-native/**",
 					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/boost_1_67_0",
 					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/Interface",
+					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/ThirdParty/spdlog/include",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -256,6 +257,7 @@
 					"$(SRCROOT)/../node_modules/react-native/**",
 					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/boost_1_67_0",
 					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/Interface",
+					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/ThirdParty/spdlog/include",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

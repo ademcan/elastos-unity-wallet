@@ -1,12 +1,3 @@
-//#import "RNElastosMainchain.h"
-//#import <Foundation/Foundation.h>
-//#import <React/RCTLog.h>
-//
-//// for cpp lib
-//#include <iostream>
-//#include <boost/scoped_ptr.hpp>
-//#include "MasterWalletManager.h"
-
 #import "RNElastosMainchain.h"
 #import <React/RCTLog.h>
 #import <Foundation/Foundation.h>
@@ -16,17 +7,17 @@
 #include "MasterWalletManager.h"
 #include "ISubWalletCallback.h"
 #include "IMasterWallet.h"
-
-//NSString *language = @"english";
-//NSString *mRootPath = [RNElastosMainchain getRootPath];
-//const char *rootPath = [mRootPath UTF8String];
-//Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
+#include "nlohmann/json.hpp"
+#include <spdlog/logger.h>
+#include <spdlog/spdlog.h>
 
 @implementation RNElastosMainchain
 
 
 RCT_EXPORT_MODULE()
 
+static bool syncSucceed = false;
+static std::shared_ptr<spdlog::logger> logger = spdlog::stdout_color_mt("sample");;
 
 class SubWalletCallback: public Elastos::ElaWallet::ISubWalletCallback {
 public:
@@ -42,8 +33,12 @@ public:
         std::cout << "OnBlockSyncStarted" << std::endl;
     }
     virtual void OnBlockHeightIncreased(uint32_t currentBlockHeight,
-                                        uint32_t estimatedHeight) {
-        std::cout << "OnBlockHeightIncreased -> " << std::endl;
+                                        int progress) {
+        //        std::cout << "OnBlockHeightIncreased -> " << std::endl;
+        NSLog(@"PROGRESS IS : %i", progress);
+        if (currentBlockHeight >= progress) {
+            syncSucceed = true;
+        }
     }
     virtual void OnBlockSyncStopped() {
         std::cout << "OnBlockSyncStopped" << std::endl;
@@ -51,19 +46,10 @@ public:
     virtual void OnBalanceChanged(uint64_t balance) {
         std::cout << "OnBalanceChanged -> " << std::endl;
     }
-    virtual void OnTxPublished(const std::string &hash,
-                               const nlohmann::json &result) {
-        std::cout << "OnTxPublished -> " << std::endl;
-    }
-    
-    virtual void OnTxDeleted(const std::string &hash, bool notifyUser,
-                             bool recommendRescan) {
-        std::cout << "OnTxDeleted -> " << std::endl;
-    }
 };
 
 
-
+// Functions required to load the /Data folder properly
 + (NSString *)getRootPath
 {
     NSString *pathStr = [[NSBundle mainBundle] bundlePath];
@@ -78,8 +64,6 @@ public:
     
     return toPath;
 }
-
-
 + (void)copyFileFromPath:(NSString *)sourcePath toPath:(NSString *)toPath
 {
     NSFileManager *fileManager = [[NSFileManager alloc] init];
@@ -118,24 +102,48 @@ RCT_EXPORT_METHOD(importWalletWithMnemonic: (RCTResponseSenderBlock)callback)
     const char *rootPath = [mRootPath UTF8String];
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
     
-    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->ImportWalletWithMnemonic("masterWalletId", "maximum farm someone leg music federal pyramid lounge scrap bomb skin mystery", "", "Ela-TestRN", false);
-    std::string chainID = "ELA";
-    Elastos::ElaWallet::ISubWallet *subWallet = masterWallet->CreateSubWallet(chainID,10000);
-    std::string publicAddress = subWallet->CreateAddress();
-    uint64_t balance = subWallet->GetBalanceWithAddress("EJgzTf95R81xMjQgzLWuUvc8wUwa6kWe2v");
-    NSLog(@"BALANCE IS : %@", [NSNumber numberWithUnsignedLongLong:balance]);
+    static const std::string gMasterWalletID = "MasterWalletTest";
     
-    while (true) {
-        sleep(10);
-        NSLog(@"BALANCE IS : %@", [NSNumber numberWithUnsignedLongLong:balance]);
+    // InitWallets()
+    std::vector<Elastos::ElaWallet::IMasterWallet *> masterWallets = manager->GetAllMasterWallets();
+    Elastos::ElaWallet::IMasterWallet *masterWallet = nullptr;
+    masterWallet = manager->ImportWalletWithMnemonic(gMasterWalletID, "maximum farm someone leg music federal pyramid lounge scrap bomb skin mystery", "", "Ela-TestRN", false);
+    masterWallets.push_back(masterWallet);
+    
+    masterWallet->CreateSubWallet("ELA");
+    masterWallet->CreateSubWallet("IdChain");
+    
+    // adding callback to all subwallets
+    for (size_t i = 0; i < masterWallets.size(); ++i) {
+        std::vector<Elastos::ElaWallet::ISubWallet *> subWallets = masterWallets[i]->GetAllSubWallets();
+        for (size_t j = 0; j < subWallets.size(); ++j) {
+            subWallets[j]->AddCallback(new SubWalletCallback());
+        }
     }
     
-    //    Elastos::ElaWallet::ISubWalletCallback *subCallback = new Elastos::ElaWallet::ISubWalletCallback();
-    //    [Elastos::ElaWallet::ISubWalletCallback->OnBlockSyncStarted()]
     
-    subWallet->AddCallback(new SubWalletCallback());
-    
-    callback(@[[NSNull null], @"success", @(publicAddress.c_str()), [NSNumber numberWithUnsignedLongLong:balance] ]);
+    while(1) {
+        if (syncSucceed) {
+            // GetBalance
+            
+            // GetSubWallet
+            Elastos::ElaWallet::IMasterWallet *masterWallet = manager->GetWallet(gMasterWalletID);
+            std::vector<Elastos::ElaWallet::ISubWallet *> subWallets = masterWallet->GetAllSubWallets();
+            for (size_t i = 0; i < subWallets.size(); ++i) {
+                if (subWallets[i]->GetChainId() == "ELA") {
+                    uint64_t balance = subWallets[i]->GetBalance();
+                    NSLog(@"BALANCE IS : %@", [NSNumber numberWithUnsignedLongLong:balance]);
+                    nlohmann::json txSummary = subWallets[i]->GetAllTransaction(0, 500, "");
+                    NSLog(@"ALLTX ---------> %s", txSummary["Transactions"].dump().c_str());
+                    std::string publicAddress = subWallets[i]->CreateAddress();
+                    callback(@[[NSNull null], @"success", @(publicAddress.c_str()), [NSNumber numberWithUnsignedLongLong:balance], @(txSummary["Transactions"].dump().c_str()) ]);
+                }
+            }
+            sleep(10);
+        } else {
+            sleep(1);
+        }
+    }
 }
 
 
@@ -150,7 +158,7 @@ RCT_EXPORT_METHOD(getLatestTx: (RCTResponseSenderBlock)callback)
     const char *rootPath = [mRootPath UTF8String];
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
     
-    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->ImportWalletWithMnemonic("masterWalletId", "maximum farm someone leg music federal pyramid lounge scrap bomb skin mystery", "", "Ela-TestRN", false);
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->ImportWalletWithMnemonic("WalletID", "maximum farm someone leg music federal pyramid lounge scrap bomb skin mystery", "", "Ela-TestRN", false);
     std::string chainID = "ELA";
     Elastos::ElaWallet::ISubWallet *subWallet = masterWallet->CreateSubWallet(chainID, 10000);
     std::string publicAddress = subWallet->CreateAddress();
@@ -192,7 +200,6 @@ RCT_EXPORT_METHOD(createWallet: (RCTResponseSenderBlock)callback)
                     Elastos::ElaWallet::ISubWallet *subWallet = masterWallet->CreateSubWallet(chainID, 10000);
                     std::string publicAddress = subWallet->CreateAddress();
                     
-                    
                     callback(@[[NSNull null], @(mnemonic.c_str()), @(publicAddress.c_str()) ]);
                     
                 } catch (const std::exception &e) {
@@ -212,4 +219,6 @@ RCT_EXPORT_METHOD(createWallet: (RCTResponseSenderBlock)callback)
 }
 
 @end
+
+
 
