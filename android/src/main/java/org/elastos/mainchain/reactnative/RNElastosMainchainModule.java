@@ -7,7 +7,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
-import org.elastos.elastoswallet.*;
+import org.elastos.spvcore.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
