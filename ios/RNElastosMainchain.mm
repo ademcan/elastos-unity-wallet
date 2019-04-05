@@ -19,6 +19,10 @@ RCT_EXPORT_MODULE()
 static bool syncSucceed = false;
 static std::shared_ptr<spdlog::logger> logger = spdlog::stdout_color_mt("sample");;
 
+NSString *mRootPath = [RNElastosMainchain getRootPath];
+const char *rootPath = [mRootPath UTF8String];
+Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
+
 class SubWalletCallback: public Elastos::ElaWallet::ISubWalletCallback {
 public:
     ~SubWalletCallback() {}
@@ -90,7 +94,8 @@ public:
 
 RCT_EXPORT_METHOD(generateMnemonic: (RCTResponseSenderBlock)callback)
 {
-    
+    const std::string mnemonic = manager->GenerateMnemonic("english");
+    callback(@[[NSNull null], mnemonic.c_str());
 }
 
 
@@ -217,6 +222,14 @@ RCT_EXPORT_METHOD(createWallet: (RCTResponseSenderBlock)callback)
         NSLog(@"MasterWalletManager Exception : %s", e.what());
     }
 }
+
+
+
+RCT_EXPORT_METHOD(SaveConfigs: (RCTResponseSenderBlock)callback)
+{
+    
+}
+
 
 @end
 
