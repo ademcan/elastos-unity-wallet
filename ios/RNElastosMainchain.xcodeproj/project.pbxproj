@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		692C20E02257773B0063BC05 /* libspvsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 692C20DF2257773B0063BC05 /* libspvsdk.a */; };
+		696ACD192258D6B10048899A /* libspvsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 692C20DF2257773B0063BC05 /* libspvsdk.a */; };
 		B3E7B58A1CC2AC0600A0062D /* RNElastosMainchain.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNElastosMainchain.mm */; };
 /* End PBXBuildFile section */
 
@@ -25,9 +25,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNElastosMainchain.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNElastosMainchain.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		692C205622576C660063BC05 /* libspvsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspvsdk.a; path = ../Elastos.ELA.SPV.Cpp/combined/libspvsdk.a; sourceTree = "<group>"; };
 		692C20DF2257773B0063BC05 /* libspvsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspvsdk.a; path = ../lib/ios/libspvsdk.a; sourceTree = "<group>"; };
-		695D268521B83BD100B56E46 /* libspvsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspvsdk.a; path = "../Elastos.ELA.SPV.Cpp/cmake-build-ios/lib/libspvsdk.a"; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RNElastosMainchain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNElastosMainchain.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNElastosMainchain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNElastosMainchain.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -37,7 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				692C20E02257773B0063BC05 /* libspvsdk.a in Frameworks */,
+				696ACD192258D6B10048899A /* libspvsdk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,8 +64,6 @@
 			isa = PBXGroup;
 			children = (
 				692C20DF2257773B0063BC05 /* libspvsdk.a */,
-				692C205622576C660063BC05 /* libspvsdk.a */,
-				695D268521B83BD100B56E46 /* libspvsdk.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -237,12 +233,11 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../lib/ios/include",
-					"$(SRCROOT)/../node_modules/react-native/**",
+					"$(SRCROOT)/../node_modules/react-native/React/Base/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/lib",
-					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/build/ios/build/arm64",
+					"$(SRCROOT)/../lib/ios",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNElastosMainchain;
@@ -258,12 +253,11 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../lib/ios/include",
-					"$(SRCROOT)/../node_modules/react-native/**",
+					"$(SRCROOT)/../node_modules/react-native/React/Base/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/lib",
-					"$(SRCROOT)/../Elastos.ELA.SPV.Cpp/cmake-build-ios/ThirdParty/boost/build/ios/build/arm64",
+					"$(SRCROOT)/../lib/ios",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNElastosMainchain;
