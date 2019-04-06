@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		696ACD192258D6B10048899A /* libspvsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 692C20DF2257773B0063BC05 /* libspvsdk.a */; };
+		696ACDA12258E84C0048899A /* libspvsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 692C20DF2257773B0063BC05 /* libspvsdk.a */; };
 		B3E7B58A1CC2AC0600A0062D /* RNElastosMainchain.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNElastosMainchain.mm */; };
 /* End PBXBuildFile section */
 
@@ -35,7 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				696ACD192258D6B10048899A /* libspvsdk.a in Frameworks */,
+				696ACDA12258E84C0048899A /* libspvsdk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
