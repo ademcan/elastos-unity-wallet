@@ -15,10 +15,6 @@
 
 RCT_EXPORT_MODULE()
 
-NSString *mRootPath = [RNElastosMainchain getRootPath];
-const char *rootPath = [mRootPath UTF8String];
-Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
-
 // Functions required to load the /Data folder properly
 + (NSString *)getRootPath
 {
@@ -65,10 +61,12 @@ RCT_EXPORT_METHOD(sayHi: (RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(generateMnemonic: (RCTResponseSenderBlock)callback)
 {
+    NSString *mRootPath = [RNElastosMainchain getRootPath];
+    const char *rootPath = [mRootPath UTF8String];
     NSLog(@"GenerateMnemonic");
-    Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager("");
+    Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
     const std::string mnemonic = manager->GenerateMnemonic("english");
-    callback(@[[NSNull null], @(mnemonic.c_str()) ]);
-}
+    NSLog(@(mnemonic.c_str()));
+    callback(@[[NSNull null], @(mnemonic.c_str()) ]);}
 
 @end
