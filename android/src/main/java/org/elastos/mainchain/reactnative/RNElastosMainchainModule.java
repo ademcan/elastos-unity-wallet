@@ -21,8 +21,8 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
     public String rootPath;
 
     public MasterWalletManager walletManager;
-    public IMasterWallet masterWallet;
-    public ISubWallet subWallet;
+//    public IMasterWallet masterWallet;
+//    public ISubWallet subWallet;
     public String language;
     public String mnemonic;
     public String masterWalletId;
