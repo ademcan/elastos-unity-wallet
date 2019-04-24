@@ -157,7 +157,9 @@ RCT_EXPORT_METHOD(CreateMultiSignMasterWallet: (RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(GetPublicKey: (RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->GetWallet(masterWalletId);
+    std::string pubKey = masterWallet->GetPublicKey();
+    callback(@[[NSNull null], @(pubKey.c_str()) ]);
 }
 
 RCT_EXPORT_METHOD(IsAddressValid: (std::string*)address callback:(RCTResponseSenderBlock)callback)
