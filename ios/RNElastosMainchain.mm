@@ -215,14 +215,16 @@ RCT_EXPORT_METHOD(GetBalanceWithAddress:(std::string*)address callback:(RCTRespo
     callback(@[[NSNull null], @"success" ]);
 }
 
-RCT_EXPORT_METHOD(GetAllAddress: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(GetAllAddress:(uint32_t*)start withCount:(uint32_t*)count callback:(RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    nlohmann::json allAddress = subWallet->GetAllAddress(*start, *count);
+    callback(@[[NSNull null], @"success" ]);
 }
 
-RCT_EXPORT_METHOD(GetAllTransaction: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(GetAllTransaction: (uint32_t*)start withCount:(uint32_t*)count withAddressOrTxid:(std::string*)addressOrTxid callback:(RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    nlohmann::json allTrasaction = subWallet->GetAllTransaction(*start, *count, *addressOrTxid);
+    callback(@[[NSNull null], @"success" ]);
 }
 
 RCT_EXPORT_METHOD(Send: (RCTResponseSenderBlock)callback)
