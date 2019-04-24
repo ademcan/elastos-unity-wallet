@@ -15,6 +15,54 @@
 
 RCT_EXPORT_MODULE()
 
+// SubWalletCallback implementation
+class SubWalletCallback: public Elastos::ElaWallet::ISubWalletCallback {
+public:
+    SubWalletCallback() {}
+    ~SubWalletCallback() {}
+    
+    virtual void OnTransactionStatusChanged(
+                                            const std::string &txid,const std::string &status,
+                                            const nlohmann::json &desc,uint32_t confirms) {
+        std::cout << "OnTransactionStatusChanged -> " << std::endl;
+        syncSucceed = true;
+    }
+    virtual void OnBlockSyncStarted() {
+        std::cout << "OnBlockSyncStarted" << std::endl;
+    }
+    virtual void OnBlockHeightIncreased(uint32_t currentBlockHeight,
+                                        int progress) {
+        std::cout << "OnBlockHeightIncreased -> " << std::endl;
+        NSLog(@"PROGRESS IS : %i", progress);
+        //    if (currentBlockHeight >= progress) {
+        //      syncSucceed = true;
+        //    }
+    }
+    virtual void OnBlockSyncStopped() {
+        std::cout << "OnBlockSyncStopped" << std::endl;
+        syncSucceed = true;
+    }
+    virtual void OnBalanceChanged(uint64_t balance) {
+        std::cout << "OnBalanceChanged -> " << std::endl;
+        syncSucceed = true;
+    }
+    virtual void OnBlockSyncProgress(uint32_t currentBlockHeight, uint32_t estimatedHeight) {
+        std::cout << "OnBlockSyncProgress" << std::endl;
+        if (currentBlockHeight >= estimatedHeight) {
+            syncSucceed = true;
+        }
+    }
+    virtual void OnTxPublished(const std::string &hash, const nlohmann::json &result) {
+        std::cout << "OnTxPublished" << std::endl;
+        syncSucceed = true;
+    }
+    virtual void OnTxDeleted(const std::string &hash, bool notifyUser, bool recommendRescan) {
+        std::cout << "OnTxDeleted" << std::endl;
+        syncSucceed = true;
+    }
+};
+
+
 // Functions required to load the /Data folder properly
 + (NSString *)getRootPath
 {
@@ -61,6 +109,133 @@ Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::Maste
 
 // BRIDGES
 
+// *******************
+//
+// Accessible bridges
+//
+// *******************
+
+
+RCT_EXPORT_METHOD(ImportWalletWithMnemonic: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(ExportWalletWithMnemonic: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetMultiSignPubKeyWithMnemonic: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetMultiSignPubKeyWithPrivKey: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(CreateWallet: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(CreateMultiSignMasterWallet: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetPublicKey: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(IsAddressValid: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetSupportedChains: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(ChangePassword: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(CreateAddress: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetBalance: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetBalanceInfo: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetBalanceWithAddress: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetAllAddress: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(GetAllTransaction: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+RCT_EXPORT_METHOD(Send: (RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Hi there...");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // this is a simple test to check the JavaScript <-> ObjC++ connection
 RCT_EXPORT_METHOD(sayHi: (RCTResponseSenderBlock)callback)
 {
@@ -96,6 +271,7 @@ RCT_EXPORT_METHOD(generateMnemonic: (RCTResponseSenderBlock)callback)
 RCT_EXPORT_METHOD(createMasterWallet: (std::string *)masterWalletId withMnemomnic:(std::string*)mnemonic withPhrasePassword:(std::string*)phrasePassword withpayPassword:(std::string*)payPassword withLanguage:(std::string*)language callback:(RCTResponseSenderBlock)callback)
 {
     Elastos::ElaWallet::IMasterWallet *masterWallet = manager->CreateMasterWallet(*masterWalletId, *mnemonic, *phrasePassword, *payPassword, "english");
+//    callback(@[[NSNull null], masterWallet]);
 }
 
 // CreateMultiSignMasterWallet (const std::string &masterWalletId, const nlohmann::json &coSigners, uint32_t requiredSignCount)
@@ -166,6 +342,11 @@ RCT_EXPORT_METHOD(createDepositTransaction: (RCTResponseSenderBlock)callback)
 }
 
 
+
+//- (Elastos::ElaWallet::IMasterWallet *) getIMasterWallet:(std::string)masterWalletID{
+//    return manager->GetWallet(masterWalletID);
+//}
+
 // *******************
 //
 // MasterWallet
@@ -174,7 +355,8 @@ RCT_EXPORT_METHOD(createDepositTransaction: (RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(getId: (RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    Elastos::ElaWallet::IMasterWallet *masterWallets = manager->GetWallet("");
+    masterWallets->GetId();
 }
 
 RCT_EXPORT_METHOD(getBasicInfo: (RCTResponseSenderBlock)callback)
