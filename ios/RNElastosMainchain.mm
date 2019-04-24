@@ -2,7 +2,7 @@
 #import <React/RCTLog.h>
 #import <Foundation/Foundation.h>
 
-//#include <iostream>
+#include <iostream>
 //#include <boost/scoped_ptr.hpp>
 #include "MasterWalletManager.h"
 #include "ISubWalletCallback.h"
@@ -14,6 +14,15 @@
 @implementation RNElastosMainchain
 
 RCT_EXPORT_MODULE()
+
+// var
+NSString *mRootPath = [RNElastosMainchain getRootPath];
+const char *rootPath = [mRootPath UTF8String];
+static std::string masterWalletId = "WalletID";
+Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
+Elastos::ElaWallet::ISubWallet *subWallet;
+static bool syncSucceed = false;
+
 
 // SubWalletCallback implementation
 class SubWalletCallback: public Elastos::ElaWallet::ISubWalletCallback {
@@ -102,10 +111,7 @@ public:
 }
 
 
-// var
-NSString *mRootPath = [RNElastosMainchain getRootPath];
-const char *rootPath = [mRootPath UTF8String];
-Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
+
 
 // BRIDGES
 
@@ -116,14 +122,17 @@ Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::Maste
 // *******************
 
 
-RCT_EXPORT_METHOD(ImportWalletWithMnemonic: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(ImportWalletWithMnemonic: (std::string*)masterWalletId withMnemomnic:(std::string*)mnemonic withPhrasePassword:(std::string*)phrasePassword withpayPassword:(std::string*)payPassword withLanguage:(std::string*)language callback:(RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    manager->ImportWalletWithMnemonic(*masterWalletId, *mnemonic, *phrasePassword, *payPassword, "english");
+    callback(@[[NSNull null], @"success"]);
 }
 
-RCT_EXPORT_METHOD(ExportWalletWithMnemonic: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(ExportWalletWithMnemonic:(std::string*)payPassword callback:(RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->GetWallet(masterWalletId);
+    manager->ExportWalletWithMnemonic(masterWallet, *payPassword);
+    callback(@[[NSNull null], @"success"]);
 }
 
 RCT_EXPORT_METHOD(GetMultiSignPubKeyWithMnemonic: (RCTResponseSenderBlock)callback)
@@ -151,39 +160,51 @@ RCT_EXPORT_METHOD(GetPublicKey: (RCTResponseSenderBlock)callback)
     NSLog(@"Hi there...");
 }
 
-RCT_EXPORT_METHOD(IsAddressValid: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(IsAddressValid: (std::string*)address callback:(RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->GetWallet(masterWalletId);
+    bool isAddressValid = masterWallet->IsAddressValid(*address);
+    callback(@[[NSNull null], @(isAddressValid) ]);
 }
 
 RCT_EXPORT_METHOD(GetSupportedChains: (RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->GetWallet(masterWalletId);
+    std::vector<std::string> supportedChains = masterWallet->GetSupportedChains();
+    // Need to return the list of supported chains
+    callback(@[[NSNull null], @"success" ]);
 }
 
-RCT_EXPORT_METHOD(ChangePassword: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(ChangePassword:(std::string*)oldPwd withNewPwd:(std::string*)newPwd callback:(RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->GetWallet(masterWalletId);
+    masterWallet->ChangePassword(*oldPwd, *newPwd);
+    callback(@[[NSNull null], @"success" ]);
 }
 
 RCT_EXPORT_METHOD(CreateAddress: (RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    subWallet->CreateAddress();
+    callback(@[[NSNull null], @"success" ]);
 }
 
 RCT_EXPORT_METHOD(GetBalance: (RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    subWallet->GetBalance();
+    callback(@[[NSNull null], @"success" ]);
 }
 
 RCT_EXPORT_METHOD(GetBalanceInfo: (RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    subWallet->GetBalanceInfo();
+    callback(@[[NSNull null], @"success" ]);
 }
 
-RCT_EXPORT_METHOD(GetBalanceWithAddress: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(GetBalanceWithAddress:(std::string*)address callback:(RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    uint64_t balance = subWallet->GetBalanceWithAddress(*address);
+    // Need to return the balance
+    callback(@[[NSNull null], @"success" ]);
 }
 
 RCT_EXPORT_METHOD(GetAllAddress: (RCTResponseSenderBlock)callback)
