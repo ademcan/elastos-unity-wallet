@@ -150,9 +150,15 @@ RCT_EXPORT_METHOD(CreateWallet: (RCTResponseSenderBlock)callback)
     NSLog(@"Hi there...");
 }
 
-RCT_EXPORT_METHOD(CreateMultiSignMasterWallet: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(CreateMultiSignMasterWallet: (std::string* )masterWalletId withCosigners:(nlohmann::json*)coSigners withRequiredSignCount:(uint32_t*)requiredSignCount callback:(RCTResponseSenderBlock)callback)
 {
-    NSLog(@"Hi there...");
+    try{
+        Elastos::ElaWallet::IMasterWallet *masterWallet = manager->CreateMultiSignMasterWallet(*masterWalletId, coSigners, *requiredSignCount);
+        callback(@[[NSNull null], @"success" ]);
+    }
+    catch (const std::exception &e) {
+        NSLog(@"MasterWallet Exception : %s", e.what());
+    }
 }
 
 RCT_EXPORT_METHOD(GetPublicKey: (RCTResponseSenderBlock)callback)
