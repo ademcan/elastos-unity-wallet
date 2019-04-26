@@ -273,6 +273,13 @@ RCT_EXPORT_METHOD(sayHi: (RCTResponseSenderBlock)callback)
     NSLog(@"Hi there...");
 }
 
+// this is a simple test to check the JavaScript <-> ObjC++ connection
+RCT_EXPORT_METHOD(test: (RCTResponseSenderBlock)callback)
+{
+    callback(@[[NSNull null], @"test" ]);
+}
+
+
 // *******************
 //
 // MasterWalletManager
