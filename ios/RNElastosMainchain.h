@@ -4,6 +4,6 @@
 @interface RNElastosMainchain : NSObject <RCTBridgeModule>
 + (NSString *)getRootPath;
 + (void)copyFileFromPath:(NSString *)sourcePath toPath:(NSString *)toPath;
-- (Elastos::ElaWallet::IMasterWallet *) getIMasterWallet:(std::string)masterWalletID;
+//- (Elastos::ElaWallet::IMasterWallet *) getIMasterWallet:(std::string)masterWalletID;
 
 @end
