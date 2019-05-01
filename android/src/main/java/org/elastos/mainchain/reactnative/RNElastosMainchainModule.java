@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
@@ -107,7 +109,7 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void GetMultiSignPubKeyWithMnemonic(Callback callback) {
+    public void GetMultiSignPubKeyWithMnemonic(String mnemonic, Callback callback) {
         String multiSignPubKey = walletManager.GetMultiSignPubKeyWithMnemonic(mnemonic, phrasePassword);
         callback.invoke(null, multiSignPubKey);
     }
@@ -151,7 +153,7 @@ public class RNElastosMainchainModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void GetSupportedChains(Callback callback) {
         String[] supportedChains = masterWallet.GetSupportedChains();
-        callback.invoke(null, supportedChains);
+        callback.invoke(null, Arrays.toString(supportedChains));
     }
 
     @ReactMethod
