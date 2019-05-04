@@ -307,8 +307,10 @@ RCT_EXPORT_METHOD(saveConfigs: (RCTResponseSenderBlock)callback)
 }
 
 // GenerateMnemonic (const std::string &language)
-RCT_EXPORT_METHOD(generateMnemonic: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(GenerateMnemonic: (RCTResponseSenderBlock)callback)
 {
+    NSString *mRootPath = [RNElastosMainchain getRootPath];
+    const char *rootPath = [mRootPath UTF8String];
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
     const std::string mnemonic = manager->GenerateMnemonic("english");
     callback(@[[NSNull null], @(mnemonic.c_str()) ]);
