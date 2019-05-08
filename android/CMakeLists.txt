@@ -10,6 +10,7 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+include_directories(src/main/jni/did/include)
 include_directories(src/main/jni/wallet/include)
 link_directories(libs/armeabi-v7a libs/arm64-v8a libs/x86 libs/x86_64)
 
@@ -27,6 +28,9 @@ add_library( # Sets the name of the library.
         src/main/jni/ElaMainchainSubWallet.cpp
         src/main/jni/ElaSidechainSubWallet.cpp
         src/main/jni/ElaIdChainSubWallet.cpp
+        src/main/jni/ElaDIDManagerSupervisor.cpp
+        src/main/jni/ElaDidManager.cpp
+        src/main/jni/ElaDid.cpp
         src/main/jni/ElaUtils.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
