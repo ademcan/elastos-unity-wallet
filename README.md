@@ -11,6 +11,7 @@ Due to the size limitation of npmjs.org, the Elastos Unity wallet module is actu
 ### Mostly automatic installation
 
 `$ react-native link elastos-unity-wallet`
+Then, for only Android, it needs to follow the following Manual Installation Android Step 4.
 
 ### Manual installation
 
@@ -35,6 +36,12 @@ Due to the size limitation of npmjs.org, the Elastos Unity wallet module is actu
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
       compile project(':react-native-elastos-wallet-core')
+  	```
+4. Insert the following lines inside the android block in `android/app/build.gradle`:
+  	```
+    packagingOptions {
+        pickFirst '**/libc++_shared.so'
+    }
   	```
 
 ## Usage
