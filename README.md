@@ -6,11 +6,11 @@ Elastos Wallet is used to manage private and public keys and to make transaction
 ## Getting started
 
 Due to the size limitation of npmjs.org, the Elastos Unity wallet module is actually available via git install from the npm command:
-`$ npm install github:cyber-republic/react-native-elastos-wallet-core --save`
+`$ npm install github:cyber-republic/elastos-unity-wallet --save`
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-elastos-wallet-core`
+`$ react-native link elastos-unity-wallet`
 
 ### Manual installation
 
