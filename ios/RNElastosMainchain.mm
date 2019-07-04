@@ -138,13 +138,14 @@ RCT_EXPORT_METHOD(GenerateMnemonic: (RCTResponseSenderBlock)callback)
 
 
 //RCT_EXPORT_METHOD(ImportWalletWithMnemonic: (std::string*)masterWalletId withMnemomnic:(std::string*)mnemonic withPhrasePassword:(std::string*)phrasePassword withpayPassword:(std::string*)payPassword withLanguage:(std::string*)language callback:(RCTResponseSenderBlock)callback)
-RCT_EXPORT_METHOD(ImportWalletWithMnemonic:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(ImportWalletWithMnemonic: (NSString*)NSStringMnemonic callback:(RCTResponseSenderBlock)callback )
 {
+    std::string mnemonic = std::string([NSStringMnemonic UTF8String]);
     NSString *mRootPath = [RNElastosMainchain getRootPath];
     const char *rootPath = [mRootPath UTF8String];
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
     try{
-        manager->ImportWalletWithMnemonic("HDWalletID", "maximum farm someone leg music federal pyramid lounge scrap bomb skin mystery", "Ela-TestRN", "Ela-TestRN", "english");
+        manager->ImportWalletWithMnemonic("HDWalletID", mnemonic, "Ela-TestRN", "Ela-TestRN", "english");
         callback(@[[NSNull null], @"success"]);
     }
     catch (const std::exception &e) {
@@ -179,12 +180,13 @@ RCT_EXPORT_METHOD(GetMultiSignPubKeyWithPrivKey: (RCTResponseSenderBlock)callbac
 
 
 //RCT_EXPORT_METHOD(CreateWallet: (std::string)masterWalletId withMnemomnic:(std::string)mnemonic withPhrasePassword:(std::string)phrasePassword withpayPassword:(std::string)payPassword withIsSingleAddress:(bool)isSingleAddress callback:(RCTResponseSenderBlock)callback)
-RCT_EXPORT_METHOD(CreateWallet: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(CreateWallet: (NSString*)NSStringMnemonic callback:(RCTResponseSenderBlock)callback )
 {
     NSString *mRootPath = [RNElastosMainchain getRootPath];
     const char *rootPath = [mRootPath UTF8String];
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
-    const std::string mnemonic = manager->GenerateMnemonic("english");
+//    const std::string mnemonic = manager->GenerateMnemonic("english");
+    std::string mnemonic = std::string([NSStringMnemonic UTF8String]);
     Elastos::ElaWallet::IMasterWallet *masterWallet = manager->CreateMasterWallet("HDWalletID", mnemonic, "blabla09", "blabla09", false);
     Elastos::ElaWallet::ISubWallet *subWallet = masterWallet->CreateSubWallet("ELA", 10000);
     
