@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
 
-const { RNElastosMainchain } = NativeModules;
+const { Wallet } = NativeModules;
 
-export default RNElastosMainchain;
+export default Wallet;

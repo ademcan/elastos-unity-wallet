@@ -16,7 +16,9 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/author/RNElastosMainchain.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m}"
+  s.source_files = "ios/**/*.{h,mm}", 'lib/ios/include/*.h', "ios/Data/*.{txt,json}", 'lib/ios/include/nlohmann/*.hpp'
+  s.vendored_libraries = "lib/ios/libspvsdk.a"
+  s.public_header_files = "ios/**/*.{h,mm}", 'lib/ios/include/*.h', 'lib/ios/include/nlohmann/*.hpp'
   s.requires_arc = true
 
   s.dependency "React"

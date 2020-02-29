@@ -7,7 +7,7 @@
 #include "MasterWalletManager.h"
 #include "ISubWalletCallback.h"
 #include "IMasterWallet.h"
-#include "nlohmann/json.hpp"
+#include "json.hpp"
 //#include <spdlog/logger.h>
 //#include <spdlog/spdlog.h>
 

@@ -1,4 +1,4 @@
-# Elastos Unity [wallet]
+# React Native Elastos Wallet Plugin
 
 The Elastos Unity wallet repository provides all the necessary code to port the wallet functionnalities to React Native. Developers can use the Elastos Unity wallet module to implement the Elastos wallet functionalities into their app.
 Elastos Wallet is used to manage private and public keys and to make transactions on the Elastos network, including DID sidechain.
