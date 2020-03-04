@@ -3,9 +3,9 @@
 The React Native Elastos Unity Wallet repository provides all the necessary code to port the [Elastos](https://www.elastos.org/) wallet functionnalities to React Native. Developers can use the Elastos Unity wallet module to implement the Elastos wallet functionalities into their existing app.
 Elastos Wallet is used to manage private and public keys and to make transactions on the Elastos network including DID sidechain.
 
-## Getting started
+## Installation
 
-Due to the size limitation of npmjs.org, the Elastos Unity wallet module is actually available via git install from the npm command:
+You can install the react-native-unity-elastos-wallet using npm or yarn:
 ```
 ## with npm
 npm install github:cyber-republic/elastos-unity-wallet --save
@@ -13,11 +13,11 @@ npm install github:cyber-republic/elastos-unity-wallet --save
 yarn add github:cyber-republic/elastos-unity-wallet
 ```
 
-## Platform specific installation
+## Platform specific linking
 
-### iOS
+### Automatic linking
 
-#### Automatic linking
+#### iOS
 
 - RN < 0.60
 ```
@@ -29,14 +29,25 @@ cd ios
 pod install
 ```
 
-#### Manual linking
+#### Android
+
+The only step required for Android is to insert the following lines inside the android block in `android/app/build.gradle`:
+```
+packagingOptions {
+	pickFirst '**/libc++_shared.so'
+}
+```
+
+### Manual linking
+
+#### iOS
 
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
 2. Go to `node_modules` ➜ `react-native-elastos-unity-wallet` and add `RNElastosMainchain.xcodeproj`
 3. In XCode, in the project navigator, select your project. Add `libRNElastosMainchain.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)
 
-### Android
+#### Android
 
 1. Open up `android/app/src/main/java/[...]/MainApplication.java`
   - Add `import org.elastos.mainchain.reactnative.RNElastosMainchainPackage;` to the imports at the top of the file
