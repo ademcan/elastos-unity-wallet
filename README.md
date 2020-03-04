@@ -5,12 +5,12 @@ Elastos Wallet is used to manage private and public keys and to make transaction
 
 ## Installation
 
-You can install the react-native-unity-elastos-wallet using npm or yarn:
+You can install the react-native-unity-elastos-wallet package using npm or yarn:
 ```
 ## with npm
-npm install github:cyber-republic/elastos-unity-wallet --save
+npm install react-native-elastos-unity-wallet --save
 ## with yarn
-yarn add github:cyber-republic/elastos-unity-wallet
+yarn add react-native-elastos-unity-wallet
 ```
 
 ## Platform specific linking
