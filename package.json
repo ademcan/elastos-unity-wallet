@@ -52,7 +52,7 @@
   "license": "Apache-2.0",
   "licenseFilename": "LICENSE",
   "main": "index.js",
-  "name": "react-native-elastos-wallet-core",
+  "name": "react-native-elastos-unity-wallet",
   "peerDependencies": {
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4"
@@ -66,5 +66,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "title": "React Native Elastos Wallet Core",
-  "version": "1.0.5"
+  "version": "1.0.7"
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		696ACDA12258E84C0048899A /* libspvsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 692C20DF2257773B0063BC05 /* libspvsdk.a */; };
+		699AD525240A9861003B51D0 /* libspvsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 699AD524240A9861003B51D0 /* libspvsdk.a */; };
 		B3E7B58A1CC2AC0600A0062D /* RNElastosMainchain.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNElastosMainchain.mm */; };
 /* End PBXBuildFile section */
 
@@ -25,8 +25,8 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNElastosMainchain.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNElastosMainchain.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		692C20DF2257773B0063BC05 /* libspvsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspvsdk.a; path = ../lib/ios/libspvsdk.a; sourceTree = "<group>"; };
 		696ACE272259C86C0048899A /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+		699AD524240A9861003B51D0 /* libspvsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspvsdk.a; path = ../lib/ios/libspvsdk.a; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RNElastosMainchain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNElastosMainchain.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNElastosMainchain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNElastosMainchain.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -36,7 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				696ACDA12258E84C0048899A /* libspvsdk.a in Frameworks */,
+				699AD525240A9861003B51D0 /* libspvsdk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +65,7 @@
 		69A2023521957DE000BABCC8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				692C20DF2257773B0063BC05 /* libspvsdk.a */,
+				699AD524240A9861003B51D0 /* libspvsdk.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,6 +109,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -231,6 +232,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../lib/ios/";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -251,6 +253,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../lib/ios/";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

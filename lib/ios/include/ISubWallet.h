@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 
 #include "ISubWalletCallback.h"
 

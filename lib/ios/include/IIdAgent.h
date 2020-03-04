@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 
 namespace Elastos {
 	namespace ElaWallet {

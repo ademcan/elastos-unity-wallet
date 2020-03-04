@@ -7,7 +7,7 @@
 #include "MasterWalletManager.h"
 #include "ISubWalletCallback.h"
 #include "IMasterWallet.h"
-#include "nlohmann/json.hpp"
+#include "json.hpp"
 //#include <spdlog/logger.h>
 //#include <spdlog/spdlog.h>
 
@@ -19,6 +19,7 @@ RCT_EXPORT_MODULE()
 NSString *mRootPath = [RNElastosMainchain getRootPath];
 const char *rootPath = [mRootPath UTF8String];
 static std::string masterWalletId = "HDWalletID";
+static std::string payPassword = "elastos2018";
 //Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
 Elastos::ElaWallet::ISubWallet *subWallet;
 static bool syncSucceed = false;
@@ -131,6 +132,7 @@ RCT_EXPORT_METHOD(GenerateMnemonic: (RCTResponseSenderBlock)callback)
 {
     NSString *mRootPath = [RNElastosMainchain getRootPath];
     const char *rootPath = [mRootPath UTF8String];
+    //    NSLog(@"Root Path : %@", @(rootPath) );
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
     const std::string mnemonic = manager->GenerateMnemonic("english");
     callback(@[[NSNull null], @(mnemonic.c_str()) ]);
@@ -145,7 +147,8 @@ RCT_EXPORT_METHOD(ImportWalletWithMnemonic: (NSString*)NSStringMnemonic callback
     const char *rootPath = [mRootPath UTF8String];
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
     try{
-        manager->ImportWalletWithMnemonic("HDWalletID", mnemonic, "Ela-TestRN", "Ela-TestRN", "english");
+        //        manager->ImportWalletWithMnemonic("HDWalletID", mnemonic, "Ela-TestRN", "Ela-TestRN", "english");
+        manager->ImportWalletWithMnemonic(masterWalletId, mnemonic, "", payPassword, false);
         callback(@[[NSNull null], @"success"]);
     }
     catch (const std::exception &e) {
@@ -154,14 +157,16 @@ RCT_EXPORT_METHOD(ImportWalletWithMnemonic: (NSString*)NSStringMnemonic callback
     }
 }
 
-//RCT_EXPORT_METHOD(ExportWalletWithMnemonic:(std::string*)payPassword callback:(RCTResponseSenderBlock)callback)
-RCT_EXPORT_METHOD(ExportWalletWithMnemonic:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(ExportWalletWithMnemonic:(NSString*)walletPayPassword callback:(RCTResponseSenderBlock)callback)
+//RCT_EXPORT_METHOD(ExportWalletWithMnemonic:(RCTResponseSenderBlock)callback)
 {
     NSString *mRootPath = [RNElastosMainchain getRootPath];
     const char *rootPath = [mRootPath UTF8String];
+    //    NSLog(@"WALLET PASSWORD : %@" , walletPayPassword);
+    std::string walletPayPasswordString = std::string([walletPayPassword UTF8String]);
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
     Elastos::ElaWallet::IMasterWallet *masterWallet = manager->GetWallet(masterWalletId);
-    std::string mnemonic = manager->ExportWalletWithMnemonic(masterWallet, "blabla09");
+    std::string mnemonic = manager->ExportWalletWithMnemonic(masterWallet, walletPayPasswordString);
     callback(@[[NSNull null], @(mnemonic.c_str()) ]);
 }
 
@@ -185,9 +190,9 @@ RCT_EXPORT_METHOD(CreateWallet: (NSString*)NSStringMnemonic callback:(RCTRespons
     NSString *mRootPath = [RNElastosMainchain getRootPath];
     const char *rootPath = [mRootPath UTF8String];
     Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
-//    const std::string mnemonic = manager->GenerateMnemonic("english");
+    //    const std::string mnemonic = manager->GenerateMnemonic("english");
     std::string mnemonic = std::string([NSStringMnemonic UTF8String]);
-    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->CreateMasterWallet("HDWalletID", mnemonic, "blabla09", "blabla09", false);
+    Elastos::ElaWallet::IMasterWallet *masterWallet = manager->CreateMasterWallet(masterWalletId, mnemonic, "", payPassword, false);
     Elastos::ElaWallet::ISubWallet *subWallet = masterWallet->CreateSubWallet("ELA", 10000);
     
     //  std::vector<Elastos::ElaWallet::ISubWallet *> subWallets = masterWallets[0]->GetAllSubWallets();
@@ -417,17 +422,17 @@ RCT_EXPORT_METHOD(test: (RCTResponseSenderBlock)callback)
 // *******************
 
 // SaveConfigs ()
-RCT_EXPORT_METHOD(saveConfigs: (RCTResponseSenderBlock)callback)
-{
-    try{
-        Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
-        manager->SaveConfigs();
-        NSLog(@"Hi there...");
-    }
-    catch (const std::exception &e) {
-        NSLog(@"SaveConfigs Exception : %s", e.what());
-    }
-}
+//RCT_EXPORT_METHOD(saveConfigs: (RCTResponseSenderBlock)callback)
+//{
+//    try{
+//        Elastos::ElaWallet::MasterWalletManager *manager = new Elastos::ElaWallet::MasterWalletManager(rootPath);
+//        manager->SaveConfigs();
+//        NSLog(@"Hi there...");
+//    }
+//    catch (const std::exception &e) {
+//        NSLog(@"SaveConfigs Exception : %s", e.what());
+//    }
+//}
 
 // CreateMasterWallet (const std::string &masterWalletId, const std::string &mnemonic, const std::string &phrasePassword, const std::string &payPassword, const std::string &language="english")
 RCT_EXPORT_METHOD(createMasterWallet: (std::string *)masterWalletId withMnemomnic:(std::string*)mnemonic withPhrasePassword:(std::string*)phrasePassword withpayPassword:(std::string*)payPassword withLanguage:(std::string*)language callback:(RCTResponseSenderBlock)callback)
@@ -494,13 +499,6 @@ RCT_EXPORT_METHOD(exportWalletWithKeystore: (RCTResponseSenderBlock)callback)
 {
     NSLog(@"Hi there...");
 }
-
-// ExportWalletWithMnemonic (IMasterWallet *masterWallet, const std::string &payPassword)
-RCT_EXPORT_METHOD(exportWalletWithMnemonic: (RCTResponseSenderBlock)callback)
-{
-    NSLog(@"Hi there...");
-}
-
 
 
 // MainchainSuballet
@@ -691,4 +689,5 @@ RCT_EXPORT_METHOD(getAllTransaction: (RCTResponseSenderBlock)callback)
 
 
 @end
+
 
